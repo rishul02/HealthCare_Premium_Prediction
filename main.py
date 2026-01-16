@@ -1,32 +1,36 @@
 import streamlit as st
 from prediction_helper import predict
 
+# ---------- PAGE CONFIG ----------
 st.set_page_config(
     page_title="Health Insurance Premium Predictor",
     layout="wide",
 )
 
-
+# ---------- CUSTOM CSS ----------
 st.markdown("""
 <style>
+/* Main Background & Font */
 body, .block-container {
     background-color: #0e1117;
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
 }
 
+/* Title */
 h1 {
     color: #00ffff;
     text-align: center;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
+/* Form Styling */
 .stForm {
     background-color: #1c1f26;
-    padding: 20px;
+    padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
 }
 
 /* Labels */
@@ -36,7 +40,9 @@ label {
 }
 
 /* Inputs */
-.stTextInput input, .stNumberInput input, .stSelectbox select {
+.stTextInput input, 
+.stNumberInput input, 
+.stSelectbox select {
     background-color: #14161c;
     color: #ffffff;
     border: 1px solid #00ffff;
@@ -58,6 +64,7 @@ label {
     color: #ffffff;
 }
 
+/* Alerts */
 .stAlert {
     background-color: #00bfbf !important;
     color: #000000 !important;
@@ -68,11 +75,10 @@ label {
 </style>
 """, unsafe_allow_html=True)
 
+# ---------- APP TITLE ----------
+st.markdown("<h1>Health Insurance Premium Predictor</h1>", unsafe_allow_html=True)
 
-
-st.title("Health Insurance Premium Predictor")
-
-
+# ---------- INPUT FORM ----------
 with st.form(key='input_form'):
     st.subheader("Enter Your Details")
 
@@ -96,7 +102,7 @@ with st.form(key='input_form'):
 
     submit_button = st.form_submit_button(label='Predict Premium')
 
-
+# ---------- PREDICTION ----------
 if submit_button:
     input_dict = {
         'Age': age,
