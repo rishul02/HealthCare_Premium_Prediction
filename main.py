@@ -1,123 +1,72 @@
 import streamlit as st
 from prediction_helper import predict
 
-# ---------- PAGE CONFIG ----------
-st.set_page_config(
-    page_title="Health Insurance Premium Predictor",
-    layout="wide",
-)
+st.title("Health Insurance Prediction App")
 
-# ---------- CUSTOM CSS ----------
-st.markdown("""
-<style>
-/* Main Background & Font */
-body, .block-container {
-    background-color: #0e1117;
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Title */
-h1 {
-    color: #00ffff;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 30px;
-}
-
-/* Form Styling */
-.stForm {
-    background-color: #1c1f26;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
-}
-
-/* Labels */
-label {
-    color: #ffffff !important;
-    font-weight: bold;
-}
-
-/* Inputs */
-.stTextInput input, 
-.stNumberInput input, 
-.stSelectbox select {
-    background-color: #14161c;
-    color: #ffffff;
-    border: 1px solid #00ffff;
-    border-radius: 8px;
-    padding: 5px 10px;
-}
-
-/* Buttons */
-.stButton>button {
-    background-color: #00ffff;
-    color: #000000;
-    font-weight: bold;
-    border-radius: 12px;
-    padding: 10px 25px;
-    transition: all 0.3s ease;
-}
-.stButton>button:hover {
-    background-color: #00bfbf;
-    color: #ffffff;
-}
-
-/* Alerts */
-.stAlert {
-    background-color: #00bfbf !important;
-    color: #000000 !important;
-    font-weight: bold;
-    border-radius: 10px;
-    padding: 10px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ---------- APP TITLE ----------
-st.markdown("<h1>Health Insurance Premium Predictor</h1>", unsafe_allow_html=True)
-
-# ---------- INPUT FORM ----------
-with st.form(key='input_form'):
-    st.subheader("Enter Your Details")
-
-    age = st.number_input('Age', 18, 100, 25)
-    number_of_dependants = st.number_input('Number of Dependents', 0, 15, 0)
-    income_lakhs = st.number_input('Income (Lakhs)', 0.0, 200.0, 0.0, 0.5)
-    genetical_risk = st.number_input('Genetical Risk', 0, 5, 0)
-
-    gender = st.selectbox('Gender', ['Male', 'Female'])
-    marital_status = st.selectbox('Marital Status', ['Unmarried', 'Married'])
-    bmi_category = st.selectbox('BMI Category', ['Normal', 'Obesity', 'Overweight', 'Underweight'])
-    smoking_status = st.selectbox('Smoking Status', ['Non-Smoker', 'Regular', 'Occasional'])
-    employment_status = st.selectbox('Employment Status', ['Salaried', 'Self-Employed'])
-    region = st.selectbox('Region', ['Northwest', 'Southeast', 'Southwest'])
-    insurance_plan = st.selectbox('Insurance Plan', ['Bronze', 'Silver', 'Gold'])
-    medical_history = st.selectbox('Medical History', [
-        'No Disease', 'Diabetes', 'High blood pressure', 'Diabetes & High blood pressure',
-        'Thyroid', 'Heart Disease', 'High blood pressure & Heart Disease', 'Diabetes & Thyroid',
+categorical_options = {
+    'Gender': ['Male', 'Female'],
+    'Marital Status':['Unmarried','Married'],
+    'BMI Category':['Normal','Obesity','Overweight','Underweight'],
+    'Smoking Status':['No Smoking','Regular','Occasional'],
+    'Employment Status':['Salaried','Self-Employed','Freelancer',''],
+    'Region':['Northwest','Southeast','Northeast','Southwest'],
+    'Medical History':[
+        'No Disease','Diabetes','High blood pressure','Diabetes & High blood pressure',
+        'Thyroid','Heart Disease','High blood pressure & Heart Disease','Diabetes & Thyroid',
         'Diabetes & Heart disease'
-    ])
+    ],
+    'Insurance Plan':['Bronze','Silver','Gold']
+}
 
-    submit_button = st.form_submit_button(label='Predict Premium')
+row1 =st.columns(3)
+row2 =st.columns(3)
+row3 =st.columns(3)
+row4 =st.columns(3)
 
-# ---------- PREDICTION ----------
-if submit_button:
-    input_dict = {
-        'Age': age,
-        'Number of Dependents': number_of_dependants,
-        'Income in Lakhs': income_lakhs,
-        'Genetical Risk': genetical_risk,
-        'Insurance Plan': insurance_plan,
-        'Employment Status': employment_status,
-        'Gender': gender,
-        'Marital Status': marital_status,
-        'BMI Category': bmi_category,
-        'Smoking Status': smoking_status,
-        'Region': region,
-        'Medical History': medical_history
-    }
+with row1[0]:
+    age = st.number_input('Age',min_value=18,max_value=100,step=1)
+with row1[1]:
+    number_of_dependants = st.number_input('Number of Dependents',min_value=0,max_value=15,step=1)
+with row1[2]:
+    income_lakhs = st.number_input('Income Lakhs',min_value=0.0,max_value=200.0,value=0.0,step=0.5)
 
+with row2[0]:
+    genetical_risk = st.number_input('Genetical Risk',min_value=0,max_value=5,step=1)
+with row2[1]:
+    insurance_plan = st.selectbox('Insurance Plan',categorical_options['Insurance Plan'])
+with row2[2]:
+    employment_status = st.selectbox('Employment Status',categorical_options['Employment Status'])
+
+with row3[0]:
+    gender = st.selectbox('Gender',categorical_options['Gender'])
+with row3[1]:
+    martial_status = st.selectbox('Marital Status',categorical_options['Marital Status'])
+with row3[2]:
+    bmi_category = st.selectbox('BMI Category',categorical_options['BMI Category'])
+
+with row4[0]:
+    smoking_status = st.selectbox('Smoking Status',categorical_options['Smoking Status'])
+with row4[1]:
+    region = st.selectbox('Region',categorical_options['Region'])
+with row4[2]:
+    medical_history = st.selectbox('Medical History',categorical_options['Medical History'])
+
+input_dict = {
+    'Age': age,
+    'Number of Dependents': number_of_dependants,
+    'Income in Lakhs': income_lakhs,
+    'Genetical Risk': genetical_risk,
+    'Insurance Plan': insurance_plan,
+    'Employment Status': employment_status,
+    'Gender': gender,
+    'Marital Status': martial_status,
+    'BMI Category': bmi_category,
+    'Smoking Status': smoking_status,
+    'Region': region,
+    'Medical History': medical_history,
+}
+
+if st.button("Predict"):
     prediction = predict(input_dict)
-    st.success(f"Expected Premium: {prediction}")
+    st.success(f'Expected Premium : {prediction}')
+
