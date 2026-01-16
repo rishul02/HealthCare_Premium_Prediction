@@ -9,7 +9,7 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-body, .main {
+body, .block-container {
     background-color: #0e1117;
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
@@ -58,7 +58,6 @@ label {
     color: #ffffff;
 }
 
-
 .stAlert {
     background-color: #00bfbf !important;
     color: #000000 !important;
@@ -68,6 +67,7 @@ label {
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 st.title("Health Insurance Premium Predictor")
